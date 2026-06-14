@@ -95,8 +95,8 @@ Este projeto foi construído para demonstrar habilidades em **Engenharia de Soft
 
 Estou aberto a novas oportunidades e desafios em Engenharia de Software (Sênior/Staff) e posições focadas em arquitetura de IA.
 
-* **LinkedIn:** `[Seu Link Aqui]`
-* **Email:** `[Seu Email Aqui]`
+* **LinkedIn:** (https://www.linkedin.com/in/kauan-oliveira-324264378/)
+* **Email:** kauandias747474@gmail.com
 
 ---
 
