@@ -266,7 +266,6 @@ response = client.chat.completions.create(
 ```
 
 ---
-```markdown
 # 🎛️ KoreAI Control Plane (Frontend)
 
 [![Stack](https://img.shields.io/badge/Stack-Next.js_%7C_TypeScript_%7C_Tailwind-black)](#)
