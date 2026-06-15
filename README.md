@@ -266,6 +266,110 @@ response = client.chat.completions.create(
 ```
 
 ---
+```markdown
+# 🎛️ KoreAI Control Plane (Frontend)
+
+[![Stack](https://img.shields.io/badge/Stack-Next.js_%7C_TypeScript_%7C_Tailwind-black)](#)
+[![Design](https://img.shields.io/badge/UI-Shadcn%20%7C%20Zustand%20%7C%20Recharts-zinc)](#)
+
+> O **KoreAI Control Plane** é a interface visual de alta densidade (Dashboard SaaS) desenvolvida para gerenciar e monitorar o gateway poliglota de inteligência artificial. Inspirado no design de ferramentas líderes como Vercel e Linear.
+
+---
+
+## 🇧🇷 Conteúdo em Português
+
+### 📋 Visão Geral
+A interface atua como o painel de controle do sistema, abstraindo a complexidade do roteamento de IA. Ela foca em **Observabilidade** e **Mutação Segura de Estado**, permitindo que os desenvolvedores monitorem a latência da rede, ajustem regras de *Circuit Breaker* e adicionem novas políticas de roteamento em tempo real.
+
+### 🛠️ Stack Tecnológica
+* **Next.js (App Router) & TypeScript:** Renderização de ponta e tipagem rigorosa para escalabilidade.
+* **TailwindCSS & Shadcn/ui:** Estética minimalista focada no *Dark Mode* (`zinc-950` e bordas finas), reduzindo a fadiga cognitiva.
+* **Zustand:** Gerenciamento de estado global leve para lidar com streams de telemetria sem engasgar a renderização.
+* **React Hook Form + Zod:** Validação implacável no cliente, garantindo que regras de infraestrutura malformadas nunca cheguem ao backend.
+* **Recharts:** Visualização tática e interativa de consumo de tokens e latência.
+
+### 📂 Estrutura de Pastas (Frontend)
+```text
+frontend/
+├── src/
+│   ├── app/                  # Next.js App Router (Layouts e Páginas)
+│   │   └── dashboard/        # Painel central de telemetria e gestão
+│   ├── components/           # Componentes atômicos (Shadcn) e formulários
+│   ├── store/                # Estado global de telemetria com Zustand
+│   └── schemas/              # Validações Zod para mutação de infraestrutura
+
+```
+
+### 🚀 Como Executar Localmente
+
+1. Certifique-se de ter o Node.js instalado (v18+ recomendado).
+2. Entre na pasta do frontend e instale as dependências:
+
+```bash
+   cd frontend
+   npm install
+
+```
+
+3. Inicie o servidor de desenvolvimento:
+
+```bash
+   npm run dev
+
+```
+
+4. Acesse o painel pelo navegador em: `http://localhost:3000`
+
+---
+
+## 🇺🇸 Content in English
+
+### 📋 Overview
+
+The interface serves as the command center for the system, abstracting the complexity of AI routing. It focuses deeply on **Observability** and **Secure State Mutation**, enabling developers to monitor network latency, tune *Circuit Breaker* thresholds, and provision new routing policies in real-time.
+
+### 🛠️ Tech Stack
+
+* **Next.js (App Router) & TypeScript:** Cutting-edge rendering paradigms and strict end-to-end type safety.
+* **TailwindCSS & Shadcn/ui:** Minimalist, *Dark Mode* focused aesthetic (`zinc-950` and 1px borders) crafted to prevent cognitive overload.
+* **Zustand:** Atomic, low-latency global state management that processes incoming telemetry without cascading DOM re-renders.
+* **React Hook Form + Zod:** Rigorous client-side payload validation, ensuring malformed infrastructure mutations never breach the backend.
+* **Recharts:** Tactical and interactive data visualization for token burn rates and proxy latency.
+
+### 📂 Directory Structure (Frontend)
+
+```text
+frontend/
+├── src/
+│   ├── app/                  # Next.js App Router (Layouts and Pages)
+│   │   └── dashboard/        # Centralized telemetry and management panel
+│   ├── components/           # Atomic UI components (Shadcn) and forms
+│   ├── store/                # Zustand global state (Live telemetry)
+│   └── schemas/              # Zod schemas for infrastructure mutations
+
+```
+
+### 🚀 How to Run Locally
+
+1. Ensure Node.js is installed (v18+ recommended).
+2. Navigate to the frontend directory and install dependencies:
+
+```bash
+   cd frontend
+   npm install
+
+```
+
+3. Spin up the development server:
+
+```bash
+   npm run dev
+
+```
+
+4. Access the dashboard via your browser at: `http://localhost:3000`
+
+
 
 ## 👤 About the Author & Contact
 
