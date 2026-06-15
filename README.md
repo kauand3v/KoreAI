@@ -374,7 +374,7 @@ frontend/
 
 This project was built to demonstrate expertise in **Backend Software Engineering, Distributed Systems Architecture, and LLMOps**.
 
-I am currently open to new opportunities and challenges in Software Engineering (Senior/Staff) and AI Architecture roles. Let's connect!
+I am currently open to new opportunities and challenges in Software Engineering and AI Architecture roles. Let's connect!
 
 * **LinkedIn:** https://www.linkedin.com/in/kauan-oliveira-324264378/
 * **Email:** kauandias747474@gmail.com
