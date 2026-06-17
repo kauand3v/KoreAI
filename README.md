@@ -32,18 +32,6 @@ O **KoreAI** utiliza uma arquitetura baseada em microsserviços onde cada lingua
 * Roteamento de rede de forma assíncrona, garantindo que o gateway nunca trave a aplicação cliente enquanto aguarda a resposta da OpenAI.
 
 
-
-### 🔥 Mojo: O Motor de Inferência e Alta Performance (KoreVM)
-
-* **Por que usamos:** Processamento local de IA exige manipulação pesada de tensores e matemática vetorial. O Mojo entrega a performance de linguagens de baixo nível (C/C++ ou Rust), utilizando acesso direto ao hardware (SIMD) e infraestrutura MLIR, mas mantendo a facilidade de escrita.
-* **Como é implementado:** Roda como um serviço de backend otimizado que recebe *streams* de dados binários do servidor Go (via gRPC) para processamento em CPU/GPU.
-* **Para que serve:**
-* **Inferência Local Direta:** Executar modelos menores localmente para *fallbacks* super rápidos sem depender de rede externa.
-* **Filtro de PII em Tempo Real:** Escanear e mascarar dados sensíveis (CPFs, senhas) em microssegundos antes de o prompt sair da rede da empresa.
-* **Geração de Embeddings:** Calcular distâncias vetoriais em alta velocidade para o *Semantic Caching*.
-
-
-
 ### 🐍 Python: O Plano de Controle, DSL e Ecossistema
 
 * **Por que usamos:** Python é o padrão ouro (*lingua franca*) da Inteligência Artificial. Ele possui o ecossistema mais rico para integração, tooling e construção de analisadores sintáticos (parsers).
@@ -71,17 +59,6 @@ O **KoreAI** utiliza uma arquitetura baseada em microsserviços onde cada lingua
 * Handling thousands of simultaneous requests from client applications.
 * Managing **Circuit Breaker** state and Rate Limiting operations.
 * Asynchronous network routing, ensuring the gateway never blocks the client application while waiting for OpenAI's response.
-
-
-
-### 🔥 Mojo: The Inference and High-Performance Engine (KoreVM)
-
-* **Why we use it:** Local AI processing requires heavy tensor manipulation and vector math. Mojo delivers the performance of low-level languages (like C/C++ or Rust) by utilizing direct hardware access (SIMD) and MLIR infrastructure, all while maintaining developer-friendly syntax.
-* **How it is implemented:** It runs as a highly optimized backend service that receives binary data streams from the Go server (via gRPC) for bare-metal CPU/GPU processing.
-* **What it is used for:**
-* **Direct Local Inference:** Running smaller models locally for blazing-fast fallbacks without relying on external networks.
-* **Real-time PII Filtering:** Scanning and masking sensitive data (SSNs, passwords) in microseconds before the prompt leaves the corporate network.
-* **Embeddings Generation:** Calculating vector distances at extreme speeds for the Semantic Caching layer.
 
 
 
