@@ -347,6 +347,60 @@ frontend/
 
 
 
+---
+Perfeito. Para integrar o **Guardian.io** dentro do README do **KoreAI** de forma que ele pareça uma peça fundamental da sua "Stack de Orquestração Segura", siga este layout.
+
+Copie e substitua a parte relevante do seu README por este bloco:
+
+---
+
+## 🛡️ Guardian.io: AI Security Middleware
+
+Como o **KoreAI** orquestra dados sensíveis, a segurança não pode ser um detalhe — é a fundação. O **Guardian.io** é o sentinela do KoreAI, garantindo que nenhum tenant acesse os dados de outro.
+
+### 🇧🇷 Versão em Português
+
+O Guardian.io é um middleware de segurança de nível arquitetural integrado ao KoreAI para resolver vazamentos de dados entre clientes (*Cross-Tenant Data Leaks*).
+
+* **Motor Anti-Caos:** Antes do KoreAI processar qualquer prompt, o Guardian injeta automaticamente restrições de isolamento na camada de acesso aos dados.
+* **Arquitetura:** Interceptação em tempo real (Hooks de ORM) com latência < 1ms.
+* **Segurança:** Bloqueio automático de qualquer query que tente evadir o isolamento do tenant.
+
+### 🇺🇸 English Version
+
+Guardian.io is an architectural-level security middleware integrated into KoreAI to solve cross-tenant data leaks.
+
+* **Anti-Chaos Engine:** Before KoreAI processes any prompt, Guardian automatically injects isolation constraints at the data access layer.
+* **Architecture:** Real-time interception (ORM Hooks) with < 1ms latency.
+* **Security:** Automatically blocks any query attempting to bypass tenant isolation.
+
+---
+
+### ⚙️ Integração KoreAI + Guardian / KoreAI + Guardian Integration
+
+```typescript
+import { app } from './kore-gateway';
+import { GuardianMiddleware } from 'guardian-io';
+
+// 1. O Guardian protege a borda do KoreAI
+// Guardian protects the edge of KoreAI
+app.use(GuardianMiddleware.captureTenantContext({
+  extractFrom: 'headers.x-tenant-id' 
+}));
+
+// 2. O KoreAI roteia, o Guardian garante a integridade
+// KoreAI routes, Guardian ensures integrity
+app.post('/v1/chat/completions', async (req, res) => {
+  // A requisição só chega aqui se o tenant for validado.
+  // The request only reaches here if the tenant is validated.
+});
+
+```
+
+---
+
+
+
 ## 👤 About the Author & Contact
 
 This project was built to demonstrate expertise in **Backend Software Engineering, Distributed Systems Architecture, and LLMOps**.
