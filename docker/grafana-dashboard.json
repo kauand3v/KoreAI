@@ -1,0 +1,7 @@
+{
+  "resource": "/c:/Users/User/koreAI/docker/grafana-dashboard.json",
+  "severity": 8,
+  "message": "Expected a JSON object, array or literal.",
+  "startLineNumber": 1,
+  "startColumn": 1
+}
