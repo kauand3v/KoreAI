@@ -586,6 +586,328 @@ cd infrastructure/terraform
 terraform init && terraform apply
 ```
 
+---
+# 🤖 KoreAI — Explicação do Diagrama de Arquitetura
+
+
+
+## 🇧🇷 Português
+
+### 📊 Diagrama de Arquitetura do Sistema
+
+O diagrama abaixo apresenta a arquitetura completa da plataforma **KoreAI**, uma plataforma multi-agente de orquestração de LLMs. Ele ilustra as interfaces de usuário, o API Gateway, o motor de orquestração, o pool de agentes especializados, os serviços compartilhados e a infraestrutura subjacente.
+
+```mermaid
+graph TB
+    subgraph "KoreAI - Plataforma Multi-Agente"
+        
+        subgraph "Interfaces de Usuário"
+            WebUI["🖥️ Web Chat UI<br/>(Next.js)"]
+            REST_API["🔗 REST API<br/>(Clientes HTTP)"]
+            CLI["⌨️ CLI Tool<br/>(Python)"]
+            SDK["📦 Python SDK<br/>(koreai lib)"]
+        end
+
+        subgraph "API Gateway - Node.js + TypeScript"
+            Auth["🔐 Autenticação<br/>(JWT)"]
+            RateLimit["⏱️ Rate Limiting"]
+            Sanitize["🧹 Input Sanitization"]
+            Router["🚦 Request Router"]
+        end
+
+        subgraph "Orchestration Engine - Python 3.11+"
+            Planner["🧠 Task Planner<br/>(ReAct / Tree of Thoughts / FSM)"]
+            Dispatcher["📋 Dispatcher<br/>(Spawn & Monitor Agents)"]
+            
+            subgraph "Agent Pool"
+                Researcher["🔍 Researcher Agent"]
+                Coder["💻 Coder Agent"]
+                Analyst["📊 Analyst Agent"]
+                Creative["✨ Creative Agent"]
+                Custom["⚙️ Custom Agent"]
+            end
+        end
+
+        subgraph "Shared Services"
+            Memory["💾 Memory Store<br/>(Redis)"]
+            Vector["🧬 Vector Store<br/>(Qdrant)"]
+            Tools["🔧 Tool Registry<br/>(Python/JS Functions)"]
+            LLMPool["🤖 LLM Pool<br/>(OpenAI / Anthropic / Google)"]
+            Sandbox["🛡️ Sandbox<br/>(gVisor / Firecracker)"]
+        end
+
+        subgraph "Data & Infrastructure"
+            PostgreSQL[("🗄️ PostgreSQL<br/>(Users, Logs, Billing)")]
+            Docker["🐳 Docker + Kubernetes"]
+            Monitoring["📊 Prometheus + Grafana<br/>+ OpenTelemetry"]
+        end
+
+        WebUI --> Auth
+        REST_API --> Auth
+        CLI --> Auth
+        SDK --> Auth
+        Auth --> RateLimit
+        RateLimit --> Sanitize
+        Sanitize --> Router
+        Router --> Planner
+        Planner --> Dispatcher
+        Dispatcher --> Researcher
+        Dispatcher --> Coder
+        Dispatcher --> Analyst
+        Dispatcher --> Creative
+        Dispatcher --> Custom
+
+        Researcher --> Memory
+        Researcher --> Vector
+        Researcher --> Tools
+        Coder --> Sandbox
+        Coder --> Tools
+        Analyst --> PostgreSQL
+        Analyst --> Tools
+        Creative --> LLMPool
+        Custom --> Tools
+        Custom --> LLMPool
+
+        Memory --> PostgreSQL
+        Vector --> PostgreSQL
+        Tools --> PostgreSQL
+        LLMPool --> Monitoring
+        Router --> Monitoring
+        Dispatcher --> Monitoring
+    end
+```
+
+### 🧩 Explicação Detalhada
+
+#### 1. Interfaces de Usuário (Topo)
+
+O usuário pode interagir com o KoreAI de quatro maneiras principais:
+
+- **Web Chat UI (Next.js)**: Uma interface de chat moderna e responsiva, com renderização no servidor (SSR) para performance.
+- **REST API**: Permite que aplicações externas enviem comandos e recebam respostas estruturadas em JSON.
+- **CLI Tool (Python)**: Para desenvolvedores e administradores, permite interagir com a plataforma via terminal.
+- **Python SDK**: Uma biblioteca (`koreai`) que abstrai as chamadas à API e oferece uma experiência nativa em Python.
+
+Todas as entradas são unificadas pelo **API Gateway**.
+
+#### 2. API Gateway (Node.js + TypeScript)
+
+Esta camada atua como a porta de entrada segura e controlada da plataforma:
+
+- **Autenticação (JWT)**: Valida tokens de acesso, garantindo que apenas usuários autorizados utilizem o sistema.
+- **Rate Limiting**: Protege contra abusos, limitando o número de requisições por usuário ou IP.
+- **Input Sanitization**: Limpa e normaliza as entradas do usuário para prevenir injeção de prompts maliciosos.
+- **Request Router**: Direciona as requisições válidas para o **Orchestration Engine**.
+
+#### 3. Orchestration Engine (Python 3.11+)
+
+O cérebro da plataforma, responsável por coordenar a resolução de tarefas complexas:
+
+- **Task Planner**: Analisa a intenção do usuário e a decompõe em um plano de ação. Utiliza estratégias avançadas de raciocínio:
+  - **ReAct** (Reason + Act): alterna entre pensar e agir.
+  - **Tree of Thoughts**: explora múltiplos caminhos de solução em paralelo.
+  - **Finite State Machines (FSM)**: para fluxos bem definidos e determinísticos.
+- **Dispatcher**: Distribui as subtarefas para os agentes apropriados e monitora sua execução, podendo executar vários agentes simultaneamente.
+
+#### 4. Agent Pool
+
+Agentes especializados, cada um com um papel, ferramentas e acesso a memória:
+
+- **Researcher Agent**: Busca informações em documentos (via RAG) e fontes externas.
+- **Coder Agent**: Gera e executa código em sandbox seguro.
+- **Analyst Agent**: Consulta bancos de dados, processa dados e gera insights.
+- **Creative Agent**: Redige textos, e-mails, e conteúdo criativo.
+- **Custom Agent**: Agentes definidos pelo usuário para tarefas específicas.
+
+Cada agente pode acessar os serviços compartilhados conforme necessário.
+
+#### 5. Shared Services (Serviços Compartilhados)
+
+Infraestrutura de suporte acessível a todos os agentes:
+
+- **Memory Store (Redis)**: Mantém o histórico de conversas (curto prazo) e fatos do usuário (preferências, contexto). Rápido, com TTL e suporte a pub/sub.
+- **Vector Store (Qdrant)**: Armazena embeddings de documentos para busca semântica. Essencial para o funcionamento do RAG (Retrieval-Augmented Generation), permitindo que os agentes fundamentem suas respostas em dados proprietários.
+- **Tool Registry**: Catálogo de funções invocáveis (APIs REST, consultas SQL, execução de código) com esquemas JSON que descrevem entradas e saídas.
+- **LLM Pool**: Abstração sobre múltiplos provedores de LLM (OpenAI, Anthropic, Google). Oferece failover automático, otimização de custos e roteamento de modelos.
+- **Sandbox (gVisor/Firecracker)**: Ambiente isolado para execução segura de código não confiável gerado pelos agentes.
+
+#### 6. Data & Infrastructure
+
+- **PostgreSQL**: Banco de dados relacional para informações estruturadas: contas de usuário, logs de auditoria, faturamento, configurações.
+- **Docker + Kubernetes**: Containerização para deploys consistentes e orquestração para escalabilidade automática dos agentes.
+- **Prometheus + Grafana + OpenTelemetry**: Stack de observabilidade para métricas, rastreamento distribuído e monitoramento de custos.
+
+### 🔄 Fluxo de uma Requisição Típica
+
+1. O usuário envia uma mensagem pelo chat, API, CLI ou SDK.
+2. O API Gateway autentica, limita a taxa e sanitiza a entrada.
+3. O Request Router encaminha para o Task Planner.
+4. O Planner decompõe a tarefa e o Dispatcher aloca os agentes necessários.
+5. Os agentes executam suas tarefas, consultando memória, vetores, ferramentas e LLMs.
+6. Os resultados são coletados e sintetizados pelo Orchestrator.
+7. A resposta é enviada de volta ao usuário pelo mesmo canal de entrada.
+8. Todo o processo é registrado em logs, métricas e rastros para auditoria e otimização.
+
+---
+
+## 🇺🇸 English
+
+### 📊 System Architecture Diagram
+
+The diagram below presents the complete architecture of the **KoreAI** platform, a multi-agent LLM orchestration system. It illustrates user interfaces, the API Gateway, the orchestration engine, the specialized agent pool, shared services, and underlying infrastructure.
+
+```mermaid
+graph TB
+    subgraph "KoreAI - Multi-Agent Platform"
+        
+        subgraph "User Interfaces"
+            WebUI["🖥️ Web Chat UI<br/>(Next.js)"]
+            REST_API["🔗 REST API<br/>(HTTP Clients)"]
+            CLI["⌨️ CLI Tool<br/>(Python)"]
+            SDK["📦 Python SDK<br/>(koreai lib)"]
+        end
+
+        subgraph "API Gateway - Node.js + TypeScript"
+            Auth["🔐 Authentication<br/>(JWT)"]
+            RateLimit["⏱️ Rate Limiting"]
+            Sanitize["🧹 Input Sanitization"]
+            Router["🚦 Request Router"]
+        end
+
+        subgraph "Orchestration Engine - Python 3.11+"
+            Planner["🧠 Task Planner<br/>(ReAct / Tree of Thoughts / FSM)"]
+            Dispatcher["📋 Dispatcher<br/>(Spawn & Monitor Agents)"]
+            
+            subgraph "Agent Pool"
+                Researcher["🔍 Researcher Agent"]
+                Coder["💻 Coder Agent"]
+                Analyst["📊 Analyst Agent"]
+                Creative["✨ Creative Agent"]
+                Custom["⚙️ Custom Agent"]
+            end
+        end
+
+        subgraph "Shared Services"
+            Memory["💾 Memory Store<br/>(Redis)"]
+            Vector["🧬 Vector Store<br/>(Qdrant)"]
+            Tools["🔧 Tool Registry<br/>(Python/JS Functions)"]
+            LLMPool["🤖 LLM Pool<br/>(OpenAI / Anthropic / Google)"]
+            Sandbox["🛡️ Sandbox<br/>(gVisor / Firecracker)"]
+        end
+
+        subgraph "Data & Infrastructure"
+            PostgreSQL[("🗄️ PostgreSQL<br/>(Users, Logs, Billing)")]
+            Docker["🐳 Docker + Kubernetes"]
+            Monitoring["📊 Prometheus + Grafana<br/>+ OpenTelemetry"]
+        end
+
+        WebUI --> Auth
+        REST_API --> Auth
+        CLI --> Auth
+        SDK --> Auth
+        Auth --> RateLimit
+        RateLimit --> Sanitize
+        Sanitize --> Router
+        Router --> Planner
+        Planner --> Dispatcher
+        Dispatcher --> Researcher
+        Dispatcher --> Coder
+        Dispatcher --> Analyst
+        Dispatcher --> Creative
+        Dispatcher --> Custom
+
+        Researcher --> Memory
+        Researcher --> Vector
+        Researcher --> Tools
+        Coder --> Sandbox
+        Coder --> Tools
+        Analyst --> PostgreSQL
+        Analyst --> Tools
+        Creative --> LLMPool
+        Custom --> Tools
+        Custom --> LLMPool
+
+        Memory --> PostgreSQL
+        Vector --> PostgreSQL
+        Tools --> PostgreSQL
+        LLMPool --> Monitoring
+        Router --> Monitoring
+        Dispatcher --> Monitoring
+    end
+```
+
+### 🧩 Detailed Explanation
+
+#### 1. User Interfaces (Top)
+
+Users can interact with KoreAI in four main ways:
+
+- **Web Chat UI (Next.js)**: A modern, responsive chat interface with server-side rendering (SSR) for performance.
+- **REST API**: Allows external applications to send commands and receive structured JSON responses.
+- **CLI Tool (Python)**: For developers and administrators to interact with the platform via terminal.
+- **Python SDK**: A library (`koreai`) that abstracts API calls and provides a native Python experience.
+
+All inputs are unified by the **API Gateway**.
+
+#### 2. API Gateway (Node.js + TypeScript)
+
+This layer acts as the secure and controlled entry point:
+
+- **Authentication (JWT)**: Validates access tokens, ensuring only authorized users access the system.
+- **Rate Limiting**: Protects against abuse by limiting requests per user or IP.
+- **Input Sanitization**: Cleans and normalizes user input to prevent malicious prompt injection.
+- **Request Router**: Directs valid requests to the **Orchestration Engine**.
+
+#### 3. Orchestration Engine (Python 3.11+)
+
+The brain of the platform, responsible for coordinating complex tasks:
+
+- **Task Planner**: Analyzes user intent and decomposes it into an action plan. Uses advanced reasoning strategies:
+  - **ReAct** (Reason + Act): alternates between thinking and acting.
+  - **Tree of Thoughts**: explores multiple solution paths in parallel.
+  - **Finite State Machines (FSM)**: for well-defined, deterministic flows.
+- **Dispatcher**: Distributes subtasks to the appropriate agents and monitors their execution, often running multiple agents concurrently.
+
+#### 4. Agent Pool
+
+Specialized agents, each with a role, tools, and memory access:
+
+- **Researcher Agent**: Searches for information in documents (via RAG) and external sources.
+- **Coder Agent**: Generates and executes code in a secure sandbox.
+- **Analyst Agent**: Queries databases, processes data, and generates insights.
+- **Creative Agent**: Writes texts, emails, and creative content.
+- **Custom Agent**: User-defined agents for specific tasks.
+
+Each agent can access shared services as needed.
+
+#### 5. Shared Services
+
+Support infrastructure accessible to all agents:
+
+- **Memory Store (Redis)**: Maintains conversation history (short-term) and user facts (preferences, context). Fast, with TTL and pub/sub support.
+- **Vector Store (Qdrant)**: Stores document embeddings for semantic search. Essential for RAG (Retrieval-Augmented Generation), allowing agents to ground answers in proprietary data.
+- **Tool Registry**: Catalog of callable functions (REST APIs, SQL queries, code execution) with JSON schemas describing inputs and outputs.
+- **LLM Pool**: Abstraction over multiple LLM providers (OpenAI, Anthropic, Google). Offers automatic failover, cost optimization, and model routing.
+- **Sandbox (gVisor/Firecracker)**: Isolated environment for safe execution of untrusted code generated by agents.
+
+#### 6. Data & Infrastructure
+
+- **PostgreSQL**: Relational database for structured information: user accounts, audit logs, billing, configurations.
+- **Docker + Kubernetes**: Containerization for consistent deploys and orchestration for auto-scaling agent pools.
+- **Prometheus + Grafana + OpenTelemetry**: Observability stack for metrics, distributed tracing, and cost monitoring.
+
+### 🔄 Typical Request Flow
+
+1. The user sends a message via chat, API, CLI, or SDK.
+2. The API Gateway authenticates, rate-limits, and sanitizes the input.
+3. The Request Router forwards it to the Task Planner.
+4. The Planner decomposes the task and the Dispatcher assigns the necessary agents.
+5. Agents execute their tasks, consulting memory, vectors, tools, and LLMs.
+6. Results are collected and synthesized by the Orchestrator.
+7. The response is sent back to the user through the same channel.
+8. The entire process is recorded in logs, metrics, and traces for auditing and optimization.
+```
+
 ## Contributing
 
 We welcome contributions! Please see `CONTRIBUTING.md` for details on coding standards, pull request process, and code of conduct.
