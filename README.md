@@ -1059,3 +1059,213 @@ This document outlines the **planned new features and improvements** for the Kor
 
 ---
 
+Este documento descreve as novas funcionalidades e melhorias planeadas para a plataforma **KoreAI**, organizadas em **8 eixos estratégicos**. Cada eixo detalha adições que elevarão a inteligência, segurança, escalabilidade e valor do sistema multi‑agente.
+
+### 1. 🧠 Expansão da Inteligência dos Agentes
+
+- **Perfis cognitivos adaptativos** – agentes ajustam o estilo de comunicação, profundidade técnica e tom emocional com base num modelo de preferências do utilizador armazenado no Redis.
+- **Loop de auto‑melhoria com feedback humano (RLHF)** – recolha automática de indicadores de qualidade (ex.: tempo de resolução, avaliações explícitas) para afinar modelos via fine‑tuning (LoRA/QLoRA) em ambiente fechado.
+- **Agente revisor interno** – um agente de bastidor que verifica factos, coerência e conformidade ética antes da resposta final ser entregue, reduzindo alucinações.
+- **Memória emocional** – histórico do estado emocional do utilizador para interações mais empáticas (ex.: detetar frustração e responder com mais paciência).
+
+### 2. 📚 Melhorias no RAG e na Memória de Longo Prazo
+
+- **Memória episódica vetorial** – guardar não apenas factos, mas também “episódios” completos de conversas anteriores, permitindo que o agente recupere contexto: “Na semana passada, falámos sobre X, e decidiste Y”.
+- **Graph RAG** – utilização de grafos de conhecimento (Neo4j integrado ao Qdrant) para representar relações complexas entre documentos, entidades e conceitos.
+- **Cache semântico inteligente** – embeddings frequentemente usados são armazenados em Redis para evitar recálculo e reduzir latência.
+- **Indexação incremental de fontes externas** – suporte a feeds RSS, atualizações de bases de dados e repositórios de documentos, com re‑indexação automática.
+
+### 3. 🔧 Ferramentas e Ações Mais Poderosas
+
+- **Browser Agent** – agente com navegador headless (Playwright/Selenium) para extrair dados dinâmicos, interagir com formulários, autenticar‑se em portais e gerar relatórios baseados em informação da web.
+- **Workflow Engine integrada** – capacidade de orquestrar pipelines complexos (ex.: “Extrai dados do S3, limpa, treina modelo e envia relatório por e‑mail”) utilizando motores como Temporal ou Prefect, expostos como ferramentas.
+- **Registo automático de APIs externas** – dado um ficheiro OpenAPI/Swagger, o sistema gera automaticamente a tool definition e a disponibiliza no Tool Registry, sem código adicional.
+- **Multi‑ferramenta condicional** – agentes podem combinar várias ferramentas numa única chamada de alto nível, com gestão automática de dependências.
+
+### 4. 🎤🧠📷 Multi‑Modalidade e Interfaces Avançadas
+
+- **Entrada/saída de voz** – integração total com Whisper (STT) e modelos TTS de última geração (ex.: ElevenLabs, Piper) com suporte a pistas emocionais.
+- **Visão computacional** – processamento de imagens, gráficos e documentos digitalizados para extração de dados estruturados, reconhecimento de objetos e OCR avançado.
+- **Interpretação de áudio** – análise de tom de voz, deteção de emoções e níveis de urgência para adaptar a resposta do agente.
+- **Saída em realidade aumentada** – protótipo de agente que gera objetos 3D ou sobreposições para headsets, útil em simulações industriais e formação.
+
+### 5. 🐝 Colaboração Multi‑Agente e Enxames
+
+- **Debate entre agentes** – dois ou mais agentes argumentam sobre um tópico, um moderador avalia a qualidade dos argumentos e sintetiza uma conclusão ponderada (melhora precisão analítica).
+- **Enxames para processamento massivo** – dezenas de agentes leves trabalham em paralelo para analisar grandes volumes de documentos, imagens ou registos, coordenados por um swarm manager.
+- **Agentes proativos** – agentes de background monitorizam fontes (ex.: calendários, mercados financeiros, redes sociais) e iniciam conversas quando detetam eventos relevantes.
+- **Hierarquias dinâmicas** – criação de hierarquias de agentes em tempo de execução, onde um agente “líder” pode delegar sub‑tarefas e escalar problemas.
+
+### 6. 🛡️ Segurança e Governança Avançadas
+
+- **RBAC para ferramentas e agentes** – cada utilizador/tenant define quais ferramentas e tipos de agente estão disponíveis, com políticas granulares.
+- **Execução em enclaves confidenciais** – suporte a ambientes de execução seguros (Intel SGX, AWS Nitro Enclaves) para processamento de dados altamente sensíveis sem exposição ao operador da plataforma.
+- **Guardião ético e de conformidade** – um agente separado que audita todas as saídas contra políticas de uso aceitável, regulações (GDPR, HIPAA) e vieses.
+- **Criptografia ponta‑a‑ponta para ferramentas** – possibilidade de encriptar parâmetros e resultados de ferramentas críticas, usando chaves geridas pelo cliente.
+
+### 7. 📊 Observabilidade, Escalabilidade e DevOps
+
+- **Agent Performance Score (APS)** – métrica composta baseada em precisão, latência, custo e feedback do utilizador, usada para seleção automática de agentes e modelos.
+- **Multi‑cloud e híbrido** – templates Terraform para Azure, GCP e ambientes on‑premise; suporte a execução de agentes em edge com modelos locais (Ollama, vLLM) para baixa latência.
+- **Marketplace API** – API pública para que terceiros submetam agentes e ferramentas, com testes automáticos de segurança e desempenho antes da publicação.
+- **Dashboard avançado para developers** – visualização em tempo real da árvore de decisão dos agentes, execução de ferramentas, tokens gastos e tracing distribuído completo.
+
+### 8. 💰 Monetização e Produto
+
+- **Planos de subscrição modulares** – pacotes baseados no número de agentes especializados, volume de documentos indexados e chamadas a ferramentas premium.
+- **Loja de agentes premium** – agentes certificados por parceiros (ex.: análise financeira, suporte jurídico) comercializados como add‑ons.
+- **White‑label** – empresas podem incorporar a plataforma KoreAI nos seus produtos, personalizando agentes, memória e interfaces com a própria marca.
+- **Insights e exportação de relatórios** – painel de produtividade que mostra tempo poupado, tarefas concluídas e ROI estimado, com possibilidade de exportar relatórios executivos gerados pelos agentes.
+
+---
+
+## 🇬🇧 English Version
+
+### KoreAI Platform Expansion Roadmap
+
+This document outlines the planned new features and improvements for the **KoreAI** platform, grouped into **8 strategic pillars**. Each pillar details additions that will raise the intelligence, security, scalability, and value of the multi‑agent system.
+
+### 1. 🧠 Agent Intelligence Expansion
+
+- **Adaptive cognitive profiles** – agents adjust communication style, technical depth, and emotional tone based on a user preference model stored in Redis.
+- **Self‑improvement loop with human feedback (RLHF)** – automatic collection of quality signals (e.g., resolution time, explicit ratings) to fine‑tune models via LoRA/QLoRA in a closed environment.
+- **Internal reviewer agent** – a behind‑the‑scenes agent that checks facts, coherence, and policy compliance before the final answer is delivered, reducing hallucinations.
+- **Emotional memory** – history of the user’s emotional state for more empathetic interactions (e.g., detecting frustration and responding with greater patience).
+
+### 2. 📚 RAG & Long‑term Memory Upgrades
+
+- **Episodic vector memory** – store not only facts but also complete conversational “episodes”, enabling recall like: “Last week we talked about X, and you decided Y.”
+- **Graph RAG** – integration with knowledge graphs (Neo4j + Qdrant) to represent complex relationships among documents, entities, and concepts.
+- **Intelligent semantic cache** – frequently used embeddings are cached in Redis to avoid recomputation and reduce latency.
+- **Incremental external source indexing** – support for RSS feeds, database change streams, and live document repositories with automatic re‑indexing.
+
+### 3. 🔧 More Powerful Tools & Actions
+
+- **Browser Agent** – headless browser agent (Playwright/Selenium) for dynamic data extraction, form interaction, portal authentication, and web‑based report generation.
+- **Integrated workflow engine** – ability to orchestrate complex pipelines (e.g., “Pull CSV from S3, clean, train model, email report”) using engines like Temporal or Prefect, exposed as tools.
+- **Auto‑registration of external APIs** – given an OpenAPI/Swagger spec, the system automatically generates the tool definition and registers it in the Tool Registry, no extra code required.
+- **Conditional multi‑tool** – agents can combine several tools into a single high‑level call with automatic dependency management.
+
+### 4. 🎤🧠📷 Multi‑Modality & Advanced Interfaces
+
+- **Voice input/output** – full integration with Whisper (STT) and state‑of‑the‑art TTS (e.g., ElevenLabs, Piper) with support for emotional cues.
+- **Computer vision** – image, chart, and scanned‑document processing for structured data extraction, object recognition, and advanced OCR.
+- **Audio interpretation** – tone‑of‑voice analysis, emotion detection, and urgency levels to adapt the agent’s response.
+- **Augmented reality output** – prototype agent that generates 3D objects or overlays for headsets, useful in industrial simulations and training.
+
+### 5. 🐝 Multi‑Agent Collaboration & Swarms
+
+- **Agent debate** – two or more agents argue a topic; a moderator evaluates the quality of arguments and synthesizes a well‑reasoned conclusion (improves analytical accuracy).
+- **Massive processing swarms** – dozens of lightweight agents work in parallel to analyze large volumes of documents, images, or logs, coordinated by a swarm manager.
+- **Proactive agents** – background agents monitor sources (calendars, financial markets, social media) and initiate conversations when relevant events are detected.
+- **Dynamic hierarchies** – runtime creation of agent hierarchies, where a “leader” agent can delegate sub‑tasks and escalate issues.
+
+### 6. 🛡️ Advanced Security & Governance
+
+- **RBAC for tools and agents** – each user/tenant defines which tools and agent types are available, with granular access policies.
+- **Confidential enclave execution** – support for secure execution environments (Intel SGX, AWS Nitro Enclaves) to process highly sensitive data without exposing it to the platform operator.
+- **Ethics & compliance guardian** – a separate agent that audits every output against acceptable use policies, regulations (GDPR, HIPAA), and bias detection.
+- **End‑to‑end tool encryption** – ability to encrypt parameters and results of critical tools using customer‑managed keys.
+
+### 7. 📊 Observability, Scalability & DevOps
+
+- **Agent Performance Score (APS)** – composite metric based on accuracy, latency, cost, and user feedback, used for automatic agent and model selection.
+- **Multi‑cloud & hybrid** – Terraform templates for Azure, GCP, and on‑premise deployments; support for edge agents running local models (Ollama, vLLM) for low latency.
+- **Marketplace API** – public API for third parties to submit agents and tools, with automated security and performance testing before publication.
+- **Advanced developer dashboard** – real‑time visualization of agent decision trees, tool execution, token consumption, and full distributed tracing.
+
+### 8. 💰 Monetization & Product
+
+- **Modular subscription plans** – packages based on the number of specialized agents, volume of indexed documents, and premium tool calls.
+- **Premium agent store** – partner‑certified agents (e.g., financial analysis, legal support) sold as add‑ons.
+- **White‑label** – enterprises can embed the KoreAI platform into their own products, customizing agents, memory, and interfaces with their brand.
+- **Insights & report export** – productivity dashboard showing time saved, tasks completed, and estimated ROI, with the ability to export executive reports generated by the agents.
+
+
+---
+#  KoreAI – Roadmap & Arquitetura Futura / Future Architecture
+
+**🇧🇷 Português** | **[🇬🇧 English](#-english-version)**
+
+---
+
+## 🗺️ Diagrama da Arquitetura Expandida (Visão Futura)
+
+```mermaid
+flowchart TB
+    subgraph Frontend["Frontend (Next.js)"]
+        Dashboard["Dashboard"]
+        Billing["Billing / Store"]
+    end
+
+    subgraph Proxy["Proxy (Go)"]
+        Gateway["API Gateway"]
+        Cache["Cache (Redis)"]
+        CB["Circuit Breaker"]
+        Marketplace["Marketplace API"]
+    end
+
+    subgraph Core["Core (Python) – novos módulos"]
+        Engine["Engine (engine.py)"]
+        TaskPlanner["Task Planner"]
+        
+        subgraph AgentPool["Agent Pool"]
+            Researcher["Researcher"]
+            Coder["Coder"]
+            Analyst["Analyst"]
+            Creative["Creative"]
+            Browser["Browser Agent"]
+            Voice["Voice Agent"]
+            Proactive["Proactive Agent"]
+            Reviewer["Reviewer"]
+            Ethics["Ethics Guardian"]
+            Moderator["Moderator"]
+        end
+        
+        subgraph Memory["Memory"]
+            Episodic["Episodic Store"]
+            Graph["Graph Store (Neo4j)"]
+            Emotional["Emotional Store"]
+            SemanticCache["Semantic Cache"]
+        end
+        
+        subgraph Tools["Tools"]
+            BrowserTool["Browser Tool"]
+            Vision["Vision Tool"]
+            AR["AR Tool"]
+            APIReg["API Registrar"]
+        end
+        
+        subgraph Workflows["Workflows"]
+            WEngine["Temporal/Prefect Engine"]
+        end
+        
+        subgraph Swarm["Swarm"]
+            SwManager["Swarm Manager"]
+            Strategies["Debate/Hierarchy"]
+        end
+    end
+
+    subgraph Security["Security (Go + Python)"]
+        Enclave["Enclave (SGX)"]
+        E2EEnc["E2E Encryption"]
+        RBAC["RBAC"]
+        GuardMiddleware["Guardian Middleware"]
+    end
+
+    subgraph Infrastructure["Infrastructure"]
+        Terraform["Terraform (multi-cloud)"]
+        Edge["Edge (Ollama)"]
+    end
+
+    Frontend --> Proxy
+    Proxy --> Engine
+    Engine --> TaskPlanner
+    TaskPlanner --> AgentPool
+    AgentPool --> Memory
+    AgentPool --> Tools
+    AgentPool --> Swarm
+    AgentPool --> Workflows
+    AgentPool --> Security
+    Infrastructure --> Proxy
+    Infrastructure --> Core
