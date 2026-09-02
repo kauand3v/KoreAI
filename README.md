@@ -81,7 +81,7 @@ KoreAI is built on five foundational principles:
 2. **Cognitive Planning** – Use advanced reasoning strategies like ReAct (Reason + Act), Tree of Thoughts, or custom state machines to decide *what* to do next.
 3. **Memory & Context** – Maintain short-term conversation state (Redis) and long-term semantic memory (Qdrant vector DB) to personalize and ground interactions.
 4. **Tool Empowerment** – Agents can call external APIs, execute code in sandboxes, query databases, and read documents – turning language into action.
-5. **Observability & Governance** – Every decision, tool call, and response is logged, monitored, and auditable.
+5. **Observability & Governance** – Every decision, tool call, and response is logged, monitored, and auditable
 
 ### How Is This Different from a Simple Chatbot?
 
